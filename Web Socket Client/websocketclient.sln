@@ -1,25 +1,31 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32602.215
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "websocketclient", "websocketclient.csproj", "{AA91C472-EA2D-4686-B86A-F4F652749E21}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AA91C472-EA2D-4686-B86A-F4F652749E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA91C472-EA2D-4686-B86A-F4F652749E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA91C472-EA2D-4686-B86A-F4F652749E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA91C472-EA2D-4686-B86A-F4F652749E21}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1D458385-1E47-4B5E-B114-742409C4B52C}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WebSocketSharp;
+
+namespace websocketclient
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Create an instance of a websocket client
+            using (WebSocket ws = new WebSocket("wss://socketsbay.com/wss/v2/2/demo/"))
+            {
+                ws.OnMessage += Ws_OnMessage;
+
+                ws.Connect();
+                ws.Send("Hello Server!");
+
+                Console.ReadKey();
+            }  
+        }
+
+        private static void Ws_OnMessage(object sender, MessageEventArgs e)
+        {
+            Console.WriteLine("Received from the server: " + e.Data);
+        }
+    }
+}
